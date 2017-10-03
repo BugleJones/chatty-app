@@ -1,10 +1,3 @@
-h1 {
-  color: tan;
-}
-
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
-@import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
-
 body {
   background: white;
   color: black;
@@ -43,11 +36,12 @@ body {
 }
 
 .message {
-  display: inline;
+  display: flex;
   padding: 5px;
 }
 
 .message.system {
+  font-style: italic;
   padding: 5px 20px;
 }
 
@@ -64,7 +58,7 @@ body {
 
 .message-username {
   flex: 2;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .navbar {
