@@ -43,12 +43,11 @@ body {
 }
 
 .message {
-  display: flex;
+  display: inline;
   padding: 5px;
 }
 
 .message.system {
-  font-style: italic;
   padding: 5px 20px;
 }
 
@@ -65,7 +64,7 @@ body {
 
 .message-username {
   flex: 2;
-  font-weight: 700;
+  font-weight: bold;
 }
 
 .navbar {
