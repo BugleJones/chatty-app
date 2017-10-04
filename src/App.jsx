@@ -10,7 +10,7 @@ class App extends Component {
     this.state = {
       data: {
         currentUser: {
-          name: 'Anonymous'
+          name: 'Bob Jones'
         },
         messages: [],
       }
@@ -22,25 +22,26 @@ class App extends Component {
   // }
 
   componentDidMount() {
-    this.socket = new WebSocket('ws://localhost:3001');
+    this.socket = new WebSocket('ws://localhost:3001/');
 
     this.socket.onopen = (event) => {
       console.log('Connected to server');
     }
 
-    this.socket.onmessage = (event) => {
-      console.log('Inside ComponentDidMount Function', JSON.parse(event.data));
-      let messageObj = JSON.parse(event.data)
 
-      let allMessages = this.state.messages.concat(messageObj)
-      this.setState({messages: allMessages});
+    this.socket.onmessage = (event) => {
+      console.log(JSON.parse(event.data));
+      let allMessages = this.state.data.messages.push(JSON.parse(event.data))
+      console.log(allMessages)
+      this.setState({
+        messages: allMessages
+      });
     }
  
   }
 
   onNewMessage(newPost) {
     let newMessage = {
-      type: "message",
       username: this.state.data.currentUser.name,
       content: newPost,
     };
@@ -49,6 +50,7 @@ class App extends Component {
 
 
   render() {
+    console.log("render: ", (this.state))
     return (
       <div>
         <nav className="navbar">
