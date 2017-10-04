@@ -8,28 +8,15 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: {name: 'Bob'}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          id: 1,
-          username: 'Bob',
-          content: 'Has anyone seen my marbles?',
+      data: {
+        currentUser: {
+          name: 'Anonymous'
         },
-        {
-          id: 2,
-          username: 'Anonymous',
-          content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
-        },
-        {
-          id: 3,
-          username: 'Michelle',
-          content: 'Hello there!',
-        }
-      ]
+        messages: [],
       }
-      // this.onNewMessage = this.onNewMessage.bind(this);
     }
-
+    this.onNewMessage = this.onNewMessage.bind(this);
+  }
   // load() {
 
   // }
@@ -42,27 +29,22 @@ class App extends Component {
     }
 
     this.socket.onmessage = (event) => {
-      console.log('Inside Component DidMount Function',JSON.parse(event.data));
-      let message = JSON.parse(event.data)
-    }
+      console.log('Inside ComponentDidMount Function', JSON.parse(event.data));
+      let messageObj = JSON.parse(event.data)
 
-    this.setState({data: 
-      {messages: this.state.data.messages.concat(JSON.parse(event.data)),
-      currentUser: {name: this.state.data.currentUser.name} }})
+      let allMessages = this.state.messages.concat(messageObj)
+      this.setState({messages: allMessages});
+    }
 
   }
 
   onNewMessage(newPost) {
-    const newMessage = {
-      id: this.state.data.newId,
+    let newMessage = {
+      type: "message",
       username: this.state.data.currentUser.name,
       content: newPost,
     };
-    const updatedMessages = this.state.data.messages.concat(newMessage)
-    this.setState({
-      messages: updatedMessages,
-      newId: this.state.newId + 1,
-    })
+    this.socket.send(JSON.stringify(newMessage));
   }
 
 

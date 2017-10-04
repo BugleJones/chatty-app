@@ -7,7 +7,7 @@ class ChatBar extends Component {
 
     this.state = {
       content: '',
-      error: '',
+      username: '',
     }
 
     this.onContent = this.onContent.bind(this);
