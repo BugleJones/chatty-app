@@ -27,6 +27,7 @@ class App extends Component {
         }
       ]
       }
+      this.onNewMessage = this.onNewMessage.bind(this);
     }
 
   // componentDidMount() {
@@ -41,13 +42,19 @@ class App extends Component {
   //     this.setState({messages: messages})
   //   }, 3000);
   // }
-  onNewMessage(content) {
-    console.log(content)
-    setTimeout(() => {
-      const messages = this.state.messages.concat(newMessage)
-      this.setState({messages: messages})
-    }, 3000);
+  onNewMessage(newPost) {
+    const newMessage = {
+      id: this.state.newId,
+      username: this.state.currentUser.name,
+      content: newPost,
+    };
+    const updatedMessages = this.state.messages.concat(newMessage)
+    this.setState({
+      messages: updatedMessages,
+      newId: this.state.newId + 1,
+    })
   }
+
 
   render() {
     return (
@@ -56,7 +63,7 @@ class App extends Component {
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
           <MessageList messages={ this.state.messages }/>
-          <ChatBar currentUser={ this.state.currentUser.name } onNewMessage={this.onNewMessage}/>
+          <ChatBar currentUser={ this.state.currentUser } onNewMessage={this.onNewMessage}/>
       </div>
     );
   }
