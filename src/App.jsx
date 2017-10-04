@@ -35,7 +35,7 @@ class App extends Component {
       let allMessages = this.state.messages.concat(messageObj)
       this.setState({messages: allMessages});
     }
-
+ 
   }
 
   onNewMessage(newPost) {
