@@ -2,32 +2,41 @@ import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx'
 
-class App extends Component {
+export default class App extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      currentUser: {
-        name: 'Dr. U. Surname',
-      },
+      online: false,
+      connecting: true,
+      username: 'Dr. U. Surname',
       messages: [],
     };
-
-    this.onNewMessage = this.onNewMessage.bind(this);
-    this.onUserChange = this.onUserChange.bind(this);
   }
-  // load() {
 
-  // }
+  connect() {
+    this.socket = new WebSocket(`ws://${location.hostname}:3001/`);
 
-  componentDidMount() {
-    this.socket = new WebSocket('ws://localhost:3001/');
+    this.setState({ connecting: true });
 
     this.socket.onopen = (event) => {
       console.log('Connected to server');
+      this.setState({ online: true, connecting: false });
+      if(this.timer) {
+        clearInterval(this.timer);
+      }
     }
 
+    this.socket.onclose = event => {
+      this.setState({ online: false });
+      if(!this.timer) {
+        this.timer = setInterval(() => {
+          // reconnect
+          this.connect();
+        }, 5000);
+      }
+    }
 
     this.socket.onmessage = (event) => {
       const { messages } = this.state;
@@ -39,40 +48,63 @@ class App extends Component {
         messages: [...messages, message]
       });
     }
- 
+
+    this.socket.onerror = (event) => {
+      // console.error(event);
+      console.info('Websocket Server is down');
+    }
   }
 
-  onNewMessage(newPost) {
-    let newMessage = {
-      username: this.state.currentUser.name,
-      content: newPost,
-    };
-    this.socket.send(JSON.stringify(newMessage));
+  disconnect() {
+    if(this.socket) {
+      this.socket.close();
+    }
   }
 
-  onUserChange(newUsername) {
-    this.setState({
-      currentUser: {
-        name: newUsername,
-      }
+  componentDidMount() {
+    this.connect();
+  }
+
+  componentWillUnmount() {
+    this.disconnect();
+  }
+
+  sendData(payload) {
+    this.socket.send(JSON.stringify(payload));
+  }
+
+  onNewMessage = (content) => {
+    const { username } = this.state;
+
+    this.sendData({
+      username,
+      content,
     });
   }
 
+  onUserChange = username => this.setState({username})
 
   render() {
-    console.log("render: ", (this.state));
-    const { currentUser: { name }, messages } = this.state;
+    // console.log("render: ", (this.state));
+    
+    const { username, messages, online, connecting } = this.state;
     return (
       <div>
-        <nav className="navbar">
-          <a href="/" className="navbar-brand">Chatty</a>
-        </nav>
-          <MessageList messages={ messages } />
-          <ChatBar username={ name }
-                   onNewMessage={this.onNewMessage}
-                   onUserChange={this.onUserChange} />
+        <NavBar online={ online } connecting={ connecting } />
+        <MessageList messages={ messages } />
+        <ChatBar username={ username }
+                 onNewMessage={this.onNewMessage}
+                 onUserChange={this.onUserChange} />
       </div>
     );
   }
 }
-export default App;
+
+export function NavBar(props) {
+  // console.log('Rendering NavBar');
+  return (
+    <nav className="navbar">
+      <a href="/" className="navbar-brand">Chatty {props.online ? "Online" : "Offline"} { props.connecting ? "Connecting" : "" }</a>
+    </nav>
+  );
+}

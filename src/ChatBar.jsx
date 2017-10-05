@@ -1,41 +1,24 @@
 import React, {Component} from 'react';
 
-class ChatBar extends Component {
+export default class ChatBar extends Component {
 
-  constructor(props) {
-    super(props);
+  onContent = event => {
+    if(event.key !== 'Enter' || event.target.value.trim() === "") { return; }
+    
+    // this.props.onNewMessage(this.state.content);
+    // this.setState({ content: '' });
+    this.props.onNewMessage(event.target.value);
+    event.target.value = '';
+  }
 
-    this.state = {
-      content: '',
-      username: props.username,
+  onUsername = event => {    
+    if(event.key === 'Enter') {
+      this.props.onUserChange(event.target.value);
     }
   }
 
-  onContent = event => {
-    if(event.key !== 'Enter') { return; }
-    
-    this.props.onNewMessage(this.state.content);
-    console.log("new message", this.state.content);
-    this.setState({ content: '' });
-  }
-
-  onContentUpdated = event => {
-    this.setState({
-      content: event.target.value
-    });
-  }
-
-  onUsername = event => {
-    if(event.key !== 'Enter') { return; }
-    
-    this.props.onUserChange(this.state.username);
-    console.log("new username", this.state.username)
-  }
-
-  onUsernameUpdated = event => {
-    this.setState({
-      username: event.target.value
-    })
+  onUsernameBlur = event => {
+    this.props.onUserChange(event.target.value);
   }
 
   render() {
@@ -44,15 +27,13 @@ class ChatBar extends Component {
       <div>
         <footer className="chatbar">
           <input
-          value={this.state.username}
+          defaultValue={this.props.username}
           className="chatbar-username"
-          onChange={this.onUsernameUpdated}
           onKeyDown={this.onUsername}
-          placeholder="Type in your username" />
+          onBlur={this.onUsernameBlur}
+          />
           <input
-          value={this.state.content}
           className="chatbar-message"
-          onChange={this.onContentUpdated}
           onKeyDown={this.onContent}
           placeholder="Type a message and hit ENTER" />
         </footer>
@@ -60,4 +41,3 @@ class ChatBar extends Component {
     );
   }
 }
-export default ChatBar;
