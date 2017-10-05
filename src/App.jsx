@@ -10,7 +10,7 @@ export default class App extends Component {
     this.state = {
       online: false,
       connecting: true,
-      username: 'Dr. U. Surname',
+      username: 'U. Surname',
       messages: [],
     };
   }
@@ -32,8 +32,7 @@ export default class App extends Component {
       this.setState({ online: false });
       if(!this.timer) {
         this.timer = setInterval(() => {
-          // reconnect
-          this.connect();
+          this.connect(); // reconnect
         }, 5000);
       }
     }
@@ -42,15 +41,12 @@ export default class App extends Component {
       const { messages } = this.state;
       const message = JSON.parse(event.data);
       
-      // let allMessages = this.state.messages.push(JSON.parse(event.data))
-      // console.log(allMessages)
       this.setState({
         messages: [...messages, message]
       });
     }
 
     this.socket.onerror = (event) => {
-      // console.error(event);
       console.info('Websocket Server is down');
     }
   }
@@ -104,7 +100,8 @@ export function NavBar(props) {
   // console.log('Rendering NavBar');
   return (
     <nav className="navbar">
-      <a href="/" className="navbar-brand">Chatty {props.online ? "Online" : "Offline"} { props.connecting ? "Connecting" : "" }</a>
+      <a href="/" className="navbar-brand">Chatty</a>
+      <h2 className="user-status">{props.online ? "online" : "offline"} { props.connecting ? "connecting..." : "" }</h2>
     </nav>
   );
 }
