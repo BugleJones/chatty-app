@@ -46,6 +46,13 @@ body {
   padding: 5px 20px;
 }
 
+.notification-content {
+  flex: 8;
+  font-style: italic;
+  padding: 5px 20px;
+  color: #DC4C46;
+}
+
 .message-content,
 .message-username {
   overflow: hidden;

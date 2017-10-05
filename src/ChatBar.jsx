@@ -4,17 +4,16 @@ export default class ChatBar extends Component {
 
   onContent = event => {
     if(event.key !== 'Enter' || event.target.value.trim() === "") { return; }
-    
-    // this.props.onNewMessage(this.state.content);
-    // this.setState({ content: '' });
     this.props.onNewMessage(event.target.value);
     event.target.value = '';
   }
 
-  onUsername = event => {    
+  onUsername = event => {
     if(event.key === 'Enter') {
+      if (this.props.username !== event.target.value) {
       this.props.onUserChange(event.target.value)
       this.refs.message.focus();
+      }
     }
   }
 

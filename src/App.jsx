@@ -41,6 +41,8 @@ export default class App extends Component {
       const { messages } = this.state;
       const message = JSON.parse(event.data);
       
+
+
       this.setState({
         messages: [...messages, message]
       });
@@ -88,11 +90,15 @@ export default class App extends Component {
     });
   }
 
-  onUserChange = username => { 
+  onUserChange = username => {
+    if (this.state.name === username) {
+      return;
+    } else {
     this.sendData({
       type: "postNotification",
       content: `${this.state.username} has changed their username to ${username}`
     });
+    }
     this.setState({ username })
   }
 
