@@ -61,6 +61,15 @@ export default class App extends Component {
     this.connect();
   }
 
+  // componentWillUpdate(nextProps, nextState) {
+  //   if (nextState.username !== this.state.username) {
+  //     this.sendData({
+  //       type: "postNotification",
+  //       content: `${this.state.username} has changed their username to ${nextState.username}`
+  //     })
+  //   }
+  // }
+
   componentWillUnmount() {
     this.disconnect();
   }
@@ -69,16 +78,23 @@ export default class App extends Component {
     this.socket.send(JSON.stringify(payload));
   }
 
-  onNewMessage = (content) => {
+  onNewMessage = content => {
     const { username } = this.state;
 
     this.sendData({
+      type: "postMessage",
       username,
       content,
     });
   }
 
-  onUserChange = username => this.setState({username})
+  onUserChange = username => { 
+    this.sendData({
+      type: "postNotification",
+      content: `${this.state.username} has changed their username to ${username}`
+    });
+    this.setState({ username })
+  }
 
   render() {
     // console.log("render: ", (this.state));

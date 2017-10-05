@@ -13,12 +13,9 @@ export default class ChatBar extends Component {
 
   onUsername = event => {    
     if(event.key === 'Enter') {
-      this.props.onUserChange(event.target.value);
+      this.props.onUserChange(event.target.value)
+      this.refs.message.focus();
     }
-  }
-
-  onUsernameBlur = event => {
-    this.props.onUserChange(event.target.value);
   }
 
   render() {
@@ -29,10 +26,11 @@ export default class ChatBar extends Component {
           <input
           defaultValue={this.props.username}
           className="chatbar-username"
+          ref="username"
           onKeyDown={this.onUsername}
-          onBlur={this.onUsernameBlur}
           />
           <input
+          ref="message"
           className="chatbar-message"
           onKeyDown={this.onContent}
           placeholder="Type a message and hit ENTER" />

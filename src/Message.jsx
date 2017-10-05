@@ -3,6 +3,19 @@ import React, {Component} from 'react';
 
 class Message extends Component {
 
+  // handleMessage() {
+  //   switch (this.props.message.type) {
+  //     case "iMessage":
+  //       return (<span className="message-content iMessage">{this.props.message.content}</span>);
+  //       break;
+  //     case "textMessage":
+  //     default:
+  //       return (<span className="message-content">{this.props.message.content}</span>);
+  //       break;
+  //   }
+  // }
+
+  
   render() {
 
     return (
