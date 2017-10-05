@@ -8,14 +8,14 @@ class App extends Component {
     super(props);
 
     this.state = {
-      data: {
-        currentUser: {
-          name: 'Bob Jones'
-        },
-        messages: [],
-      }
-    }
+      currentUser: {
+        name: 'Dr. U. Surname',
+      },
+      messages: [],
+    };
+
     this.onNewMessage = this.onNewMessage.bind(this);
+    this.onUserChange = this.onUserChange.bind(this);
   }
   // load() {
 
@@ -30,11 +30,13 @@ class App extends Component {
 
 
     this.socket.onmessage = (event) => {
-      console.log(JSON.parse(event.data));
-      let allMessages = this.state.data.messages.push(JSON.parse(event.data))
-      console.log(allMessages)
+      const { messages } = this.state;
+      const message = JSON.parse(event.data);
+      
+      // let allMessages = this.state.messages.push(JSON.parse(event.data))
+      // console.log(allMessages)
       this.setState({
-        messages: allMessages
+        messages: [...messages, message]
       });
     }
  
@@ -42,22 +44,33 @@ class App extends Component {
 
   onNewMessage(newPost) {
     let newMessage = {
-      username: this.state.data.currentUser.name,
+      username: this.state.currentUser.name,
       content: newPost,
     };
     this.socket.send(JSON.stringify(newMessage));
   }
 
+  onUserChange(newUsername) {
+    this.setState({
+      currentUser: {
+        name: newUsername,
+      }
+    });
+  }
+
 
   render() {
-    console.log("render: ", (this.state))
+    console.log("render: ", (this.state));
+    const { currentUser: { name }, messages } = this.state;
     return (
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
-          <MessageList messages={ this.state.data.messages }/>
-          <ChatBar currentUser={ this.state.data.currentUser} onNewMessage={this.onNewMessage}/>
+          <MessageList messages={ messages } />
+          <ChatBar username={ name }
+                   onNewMessage={this.onNewMessage}
+                   onUserChange={this.onUserChange} />
       </div>
     );
   }
