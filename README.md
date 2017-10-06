@@ -6,29 +6,8 @@ Chatty is built using React and WebSockets (ws). In addition, this app benefits 
 
 ## Final Product
 
-!["Screenshot of Tweeter Welcome Page"](https://github.com/BugleJones/tweeter/blob/master/public/docs/Landing-Page.png)
-!["Screenshot of Too Many Characters!"](https://github.com/BugleJones/tweeter/blob/master/public/docs/Too-Many-Characters.png)
-!["Screenshot of Hidden Tweet Menu"](https://github.com/BugleJones/tweeter/blob/master/public/docs/Tweet-Menu-Hidden.png)
-
-### Usage
-
-Clone the boilerplate and create your own git repo.
-
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
-
-Install the dependencies and start the server.
-
-```
-npm install
-npm start
-open http://localhost:3000
-```
+!["Chatty Intro Page"](https://github.com/BugleJones/chatty-app/blob/master/docs/Open%20Conversation.png)
+!["Chatty Conversation in full swing"](https://github.com/BugleJones/chatty-app/blob/master/docs/Conversations.png)
 
 ### Static Files
 
@@ -38,7 +17,7 @@ For example, if you copy a file called my_image.png into the build folder you ca
 
 ### Linting
 
-This boilerplate project includes React ESLint configuration.
+This project includes React ESLint configuration.
 
 ```
 npm run lint
@@ -50,3 +29,4 @@ npm run lint
 * Webpack
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+* [WebSockets] (https://github.com/websockets/ws)
