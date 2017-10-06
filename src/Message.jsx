@@ -10,10 +10,6 @@ class Message extends Component {
         <div className="notification">
           <span className="notification-content">{this.props.content}</span>
         </div>)
-      case "userConnected":
-        <div className="user-connected">
-          <span className="user-connected-content">{this.props.count} {this.props.content}</span>
-        </div>)
       case "postMessage":
         default:
         return (

@@ -10,6 +10,7 @@ export default class App extends Component {
     this.state = {
       online: false,
       connecting: true,
+      userCount: 0,
       username: 'U. Surname',
       messages: [],
     };
@@ -22,13 +23,11 @@ export default class App extends Component {
 
     this.socket.onopen = (event) => {
       console.log('Connected to server');
-      const newCount = JSON.parse(event.data);
       this.setState({ online: true, connecting: false, });
       if(this.timer) {
         clearInterval(this.timer);
       }
     }
-
 
 
     this.socket.onclose = event => {
@@ -42,12 +41,31 @@ export default class App extends Component {
 
     this.socket.onmessage = (event) => {
       const { messages } = this.state;
-      const message = JSON.parse(event.data);
-
-      this.setState({
-        messages: [...messages, message]
-      });
-    }
+      let message;
+      try {
+        message = JSON.parse(event.data);
+      } 
+      catch (error) {
+        console.log(error)
+        return;
+      }
+      console.log(message)
+      switch (message.type) {
+        case "postMessage":
+        case "postNotification":
+          this.setState({
+            messages: [...messages, message]
+          })
+          break;
+        case "user-count":
+          this.setState({
+            userCount: message.count
+          })
+          break;
+        default:
+          break;
+        }
+      }
 
     this.socket.onerror = (event) => {
       console.info('Websocket Server is down');
@@ -63,15 +81,6 @@ export default class App extends Component {
   componentDidMount() {
     this.connect();
   }
-
-  // componentWillUpdate(nextProps, nextState) {
-  //   if (nextState.username !== this.state.username) {
-  //     this.sendData({
-  //       type: "postNotification",
-  //       content: `${this.state.username} has changed their username to ${nextState.username}`
-  //     })
-  //   }
-  // }
 
   componentWillUnmount() {
     this.disconnect();
@@ -102,10 +111,10 @@ export default class App extends Component {
   render() {
     // console.log("render: ", (this.state));
     
-    const { username, messages, online, connecting } = this.state;
+    const { username, messages, online, connecting, userCount } = this.state;
     return (
       <div>
-        <NavBar online={ online } connecting={ connecting } />
+        <NavBar online={ online } userCount={ userCount } connecting={ connecting } />
         <MessageList messages={ messages } />
         <ChatBar username={ username }
                  onNewMessage={this.onNewMessage}
@@ -116,11 +125,10 @@ export default class App extends Component {
 }
 
 export function NavBar(props) {
-  // console.log('Rendering NavBar');
   return (
     <nav className="navbar">
       <a href="/" className="navbar-brand">Chatty</a>
-      <h2 className="user-status">{props.online ? "online" : "offline"} { props.connecting ? "connecting..." : "" }</h2>
+      <h2 className="user-status"> { props.userCount + " user(s)" } {props.online ? "online" : "offline"} { props.connecting ? "connecting..." : "" }</h2>
     </nav>
   );
 }
