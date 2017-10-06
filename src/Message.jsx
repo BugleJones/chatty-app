@@ -7,7 +7,7 @@ class Message extends Component {
     switch (this.props.type) {
       case "postNotification":
         return (
-        <div className="notification">
+        <div className="message-system">
           <span className="notification-content">{this.props.content}</span>
         </div>)
       case "postMessage":

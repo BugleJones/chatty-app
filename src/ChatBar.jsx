@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 
 export default class ChatBar extends Component {
 
+  //Message change
   onContent = event => {
     if(event.key !== 'Enter' || event.target.value.trim() === "") { return; }
     this.props.onNewMessage(event.target.value);
     event.target.value = '';
   }
 
+  //Username change
   onUsername = event => {
     if(event.key === 'Enter') {
       if (this.props.username !== event.target.value) {

@@ -11,11 +11,12 @@ export default class App extends Component {
       online: false,
       connecting: true,
       userCount: 0,
-      username: 'U. Surname',
+      username: 'Username',
       messages: [],
     };
   }
 
+  //User is connected and server is running
   connect() {
     this.socket = new WebSocket(`ws://${location.hostname}:3001/`);
 
@@ -71,7 +72,6 @@ export default class App extends Component {
       console.info('Websocket Server is down');
     }
   }
-
   disconnect() {
     if(this.socket) {
       this.socket.close();
@@ -82,14 +82,17 @@ export default class App extends Component {
     this.connect();
   }
 
+  //User disconnects and server is running
   componentWillUnmount() {
     this.disconnect();
   }
 
+  //Funnel for the data to the WebSocket server
   sendData(payload) {
     this.socket.send(JSON.stringify(payload));
   }
 
+  //Message send helper function
   onNewMessage = content => {
     const { username } = this.state;
 
@@ -99,7 +102,7 @@ export default class App extends Component {
       content,
     });
   }
-
+  //Username change helper function
   onUserChange = username => {
     this.sendData({
       type: "postNotification",
@@ -109,8 +112,6 @@ export default class App extends Component {
   }
 
   render() {
-    // console.log("render: ", (this.state));
-    
     const { username, messages, online, connecting, userCount } = this.state;
     return (
       <div>

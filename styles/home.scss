@@ -44,6 +44,7 @@ body {
 .message.system {
   font-style: italic;
   padding: 5px 20px;
+  
 }
 
 .notification-content {
@@ -51,6 +52,7 @@ body {
   font-style: italic;
   padding: 5px 20px;
   color: #DC4C46;
+  float: right;
 }
 
 .message-content,

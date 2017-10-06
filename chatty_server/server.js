@@ -30,6 +30,7 @@ wss.broadcast = function broadcast(data) {
   });
 };
 
+//User-count helper function
 function broadcastUserCount() {
   const userCount = wss.clients.size
   wss.broadcast({

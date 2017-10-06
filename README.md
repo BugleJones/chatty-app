@@ -1,7 +1,14 @@
-React Boilerplate
-=====================
+# Chatty Project
 
-A minimal and light dev environment for ReactJS.
+Chatty is a simple, yet responsive and user-friendly, single-page Slack clone.
+
+Chatty is built using React and WebSockets (ws). In addition, this app benefits from the use of Babel, Sass, Express, uuid and webpack.
+
+## Final Product
+
+!["Screenshot of Tweeter Welcome Page"](https://github.com/BugleJones/tweeter/blob/master/public/docs/Landing-Page.png)
+!["Screenshot of Too Many Characters!"](https://github.com/BugleJones/tweeter/blob/master/public/docs/Too-Many-Characters.png)
+!["Screenshot of Hidden Tweet Menu"](https://github.com/BugleJones/tweeter/blob/master/public/docs/Tweet-Menu-Hidden.png)
 
 ### Usage
 
